@@ -20,6 +20,8 @@ namespace Client {
                 .Add (new StructureInitSystem())
                 .Add(new StructureRunSystem())
                 .Add(new ClickManagerSystem())
+                .Add(new StabilitySystem())
+                .Add(new DangerSystem())
 
                 
                 // register one-frame components (order is important), for example:
