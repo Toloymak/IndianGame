@@ -5,5 +5,6 @@
         public static string StructureSlot = "Building/StructureSlot";
         public static string NormalStructure = "Building/Structure";
         public static string EmptyStructure = "Building/EmptyStructure";
+        public static string BuildItem = "Building/BuildItem";
     }
 }

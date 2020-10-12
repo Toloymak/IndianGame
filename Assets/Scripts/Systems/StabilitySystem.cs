@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Components;
 using Leopotam.Ecs;
@@ -12,6 +13,8 @@ namespace Systems
         readonly EcsWorld _world = null;
         private EcsFilter<StabilityComponent, LabelComponent> _stabilityComponents = null;
         private EcsFilter<DangerComponent> _dangerComponent = null;
+        private EcsFilter<ResourceComponent> _resources = null;
+
 
         private const long DefaultStability = 10000;
         
@@ -52,9 +55,10 @@ namespace Systems
             if (DateTime.Now - lastCall > period)
             {
                 lastCall = DateTime.Now;
-                var dangerComponent = _dangerComponent.Get1.First();
+                var resourceComponent = _resources.Get1.First();
                 var stabilityComponent = _stabilityComponents.Get1.First();
-                stabilityComponent.Value -= dangerComponent.Items.Sum(x => x.Value);
+                stabilityComponent.Value -= resourceComponent.GetDanger();
+                stabilityComponent.Value += resourceComponent.GetStability();
             }
         }
     }

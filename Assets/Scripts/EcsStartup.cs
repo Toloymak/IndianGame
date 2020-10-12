@@ -1,15 +1,18 @@
+using System.Collections;
 using Systems;
 using Leopotam.Ecs;
+using Leopotam.Ecs.Ui.Systems;
 using UnityEngine;
 
 namespace Client {
     sealed class EcsStartup : MonoBehaviour {
         EcsWorld _world;
         EcsSystems _systems;
+        
+        [SerializeField] EcsUiEmitter _uiEmitter = null;
 
         void Start () {
             // void can be switched to IEnumerator for support coroutines.
-            
             _world = new EcsWorld ();
             _systems = new EcsSystems (_world);
 #if UNITY_EDITOR
@@ -17,11 +20,14 @@ namespace Client {
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create (_systems);
 #endif
             _systems
+                .Add(new ResourceSystem())
                 .Add (new StructureInitSystem())
                 .Add(new StructureRunSystem())
+                .Add(new BuildingMenuSystem())
                 .Add(new ClickManagerSystem())
                 .Add(new StabilitySystem())
                 .Add(new DangerSystem())
+                .InjectUi(_uiEmitter)
 
                 
                 // register one-frame components (order is important), for example:

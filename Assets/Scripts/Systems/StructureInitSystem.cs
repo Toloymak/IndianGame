@@ -1,9 +1,10 @@
+using System;
 using Client.Enums;
 using Components;
-using Enums;
 using Leopotam.Ecs;
 using ResourceCollections;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Systems {
     sealed class StructureInitSystem : IEcsInitSystem {
@@ -27,12 +28,12 @@ namespace Systems {
             var emptyStructurePrefab = Resources.Load(BuildingPrefabs.EmptyStructure);
 
             var entity = _world.NewEntity();
-            var clickableComponent = entity.Set<ClickableComponent>();
-            clickableComponent.ActionType = ActionType.OpenBuildMenu;
+            entity.Set<ClickableComponent>();
             
             var structureComponent = entity.Set<StructureComponent>();
             structureComponent.Status = StructureStatus.Empty;
             structureComponent.Object = Object.Instantiate(emptyStructurePrefab) as GameObject;
+            structureComponent.Id = Guid.NewGuid();
 
             if (!(structureComponent.Object is null))
                 structureComponent.Object.transform.position = structureTemplate.transform.position;
