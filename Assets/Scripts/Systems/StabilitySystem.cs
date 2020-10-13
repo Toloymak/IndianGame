@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Globalization;
 using System.Linq;
 using Components;
 using Leopotam.Ecs;
@@ -16,13 +15,12 @@ namespace Systems
         private EcsFilter<ResourceComponent> _resources = null;
 
 
-        private const long DefaultStability = 10000;
+        private const long DefaultStability = 0;
         
         public void Init()
         {
             var entity = _world.NewEntity();
             var stabilityComponent = entity.Set<StabilityComponent>();
-            stabilityComponent.Value = DefaultStability;
             
             var label = entity.Set<LabelComponent>();
             label.NameObject = GameObject.Find("StabilityName");
@@ -31,35 +29,17 @@ namespace Systems
 
         public void Run()
         {
-            RecalculateDangerValue();
             UpdateStabilityUi();
         }
 
         private void UpdateStabilityUi()
         {
-            var stability = _stabilityComponents.Get1.First();
+            var resource = _resources.Get1.First();
             var label = _stabilityComponents.Get2.First();
 
-            label.ValueObject.GetComponent<Text>().text = stability.Value.ToString();
-        }
-        
-        
-        private DateTime lastCall;
-        private TimeSpan period = new TimeSpan(0, 0, 1);
-        
-        private void RecalculateDangerValue()
-        {
-            if (lastCall == default)
-                lastCall = DateTime.Now;
-
-            if (DateTime.Now - lastCall > period)
-            {
-                lastCall = DateTime.Now;
-                var resourceComponent = _resources.Get1.First();
-                var stabilityComponent = _stabilityComponents.Get1.First();
-                stabilityComponent.Value -= resourceComponent.GetDanger();
-                stabilityComponent.Value += resourceComponent.GetStability();
-            }
+            label.ValueObject.GetComponent<Text>().text = resource
+                .GetStability()
+                .ToString(CultureInfo.InvariantCulture);
         }
     }
 }

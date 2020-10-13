@@ -63,7 +63,7 @@ namespace Systems
                         buildMenu.StructureComponent.Status = StructureStatus.ConstructionProcess;
                         buildMenu.StructureComponent.Type = buildItemType;
                         
-                        _sourceComponent.Get1.First().ResourceItems.Add(buildItemType.GetResources());
+                        _sourceComponent.Get1.First().EffectItems.Add(buildItemType.GetResources());
                         
                         buildMenu.Menu.SetActive(false);
 

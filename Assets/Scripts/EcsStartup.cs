@@ -27,6 +27,7 @@ namespace Client {
                 .Add(new ClickManagerSystem())
                 .Add(new StabilitySystem())
                 .Add(new DangerSystem())
+                .Add(new ActionSystem())
                 .InjectUi(_uiEmitter)
 
                 
